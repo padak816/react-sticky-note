@@ -1,6 +1,8 @@
 import React, { useCallback, useRef, useState } from "react";
+import { observer } from "mobx-react";
 import styled from "styled-components";
 import ContentEditable from "react-contenteditable";
+import { useStickyMemo } from "../store/memo";
 const Wrapper = styled.div`
   position: absolute;
   background-color: lightyellow;
@@ -21,7 +23,17 @@ const Header = styled.div`
   padding: 4px;
   cursor: move;
 `;
-const Button = styled.div`
+const AddButton = styled.div`
+  width: 15px;
+  height: 15px;
+  top: 0;
+  right: 0;
+  background-color: white;
+  cursor: pointer;
+  text-align: center;
+  line-height: 0.7;
+`;
+const CloseButton = styled.div`
   width: 15px;
   height: 15px;
   top: 0;
@@ -38,7 +50,9 @@ const Content = styled.div`
   padding: 10px;
 `;
 
-const Memo = () => {
+const Memo = ({ id }) => {
+  const { createMemo, deleteMemo } = useStickyMemo();
+
   const [title, setTitle] = useState("");
   const textRef = useRef("");
   const wrapRef = useRef(null);
@@ -109,8 +123,21 @@ const Memo = () => {
           e.stopPropagation();
         }}
       >
+        <AddButton
+          onClick={() => {
+            createMemo();
+          }}
+        >
+          +
+        </AddButton>
         <div>{title}</div>
-        <Button>x</Button>
+        <CloseButton
+          onClick={() => {
+            deleteMemo(id);
+          }}
+        >
+          x
+        </CloseButton>
       </Header>
       <Content>
         <ContentEditable
@@ -125,4 +152,4 @@ const Memo = () => {
     </Wrapper>
   );
 };
-export default Memo;
+export default observer(Memo);

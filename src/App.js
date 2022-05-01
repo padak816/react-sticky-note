@@ -1,10 +1,12 @@
 import React from "react";
-import Memo from "./components/Memo";
+import { MemoProvider } from "./store/memo";
+import MemoContainer from "./components/MemoContainer";
+
 function App() {
   return (
-    <div>
-      <Memo />
-    </div>
+    <MemoProvider>
+      <MemoContainer />
+    </MemoProvider>
   );
 }
 
